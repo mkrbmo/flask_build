@@ -1,0 +1,249 @@
+:root {
+    --bg-color: rgb(253, 253, 253);
+    --foreground-color:  rgb(251, 251, 251);;
+    --text-main: black;
+    --text-accent: rgb(255, 212, 19);
+}
+/*
+@font-face {
+    font-family: "bluu-next";
+    src: url("BluuNext-Bold.otf"), format("opentype");
+    font-weight: bold;
+}
+@font-face {
+    font-family: "bluu-next";
+    src: url("HalibutSerif-Regular.woff"), format("woff"),
+        urk=local("HalibutSerif-Regular.woff2"), format("woff2");
+    font-weight: normal;
+}
+*/
+
+html, body {
+    font-family: Century Gothic, san-serif;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+hr {
+    margin: 0;
+}
+h2 {
+    text-decoration: underline;
+    font-weight: normal;
+}
+#mobile-disclaimer {
+    display: none;
+    width: 100%;
+}
+
+
+
+/* --------------
+ |  NAVIGATION  |
+ ---------------*/
+
+#map-container, #map {
+    width: 100%;
+    height: 100%;
+}
+#map-container {
+    position: fixed;
+}
+#content-container {
+    width: 45%;
+    float: right;
+    position: relative;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+
+#navigation-container {
+    position: fixed;
+    display: flex;
+    padding: 2rem;
+}
+.link {
+    color: var(--text-main);
+    text-decoration: none;
+}
+.link:hover {
+    font-weight: bold;
+}
+.nav-item {
+    background-color: var(--bg-color);
+    padding:1rem;
+    margin: 0 0.5rem;
+    display: block;
+    font-size: 1.1rem;
+    border: 1px solid black;
+    
+} 
+
+.post {
+    padding:0.5rem 0;
+    background-color: var(--foreground-color);
+    margin-bottom: -1px;
+    border: 1px solid black;
+    
+}
+
+.post-location {
+    font-style: italic;
+    overflow: hidden;
+}
+
+.post-text{
+    padding: 0 0.6rem 0;
+}
+.title {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1rem;
+    padding: 1rem;
+    text-decoration: underline;
+   
+}
+
+
+.post input {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+
+  }
+.post-content {
+    max-height:0;
+    overflow:hidden;
+}
+.post-text > * {
+    white-space: pre-wrap;
+}
+    
+  
+.post input:checked ~ .post-content {
+    max-height: 100%
+}
+/*
+.image-container {
+    display: flex;
+    align-items: center;
+    
+}
+.post-image {
+    width: 100%;
+    height: 70%;
+    max-height: 300px;
+    object-fit: contain;
+    overflow: hidden;
+}
+
+.arrow {
+    padding: 1rem 0.5rem;
+    color: var(--text-accent);
+    -webkit-user-select: none;  
+    -moz-user-select: none; 
+    -ms-user-select: none; 
+    user-select: none;
+    font-size: 300%;
+}
+.arrow:hover{
+    color: rgb(255,171,70);
+}
+.post-image {
+    display: none;
+    object-fit: contain;
+}
+.active-image {
+    display: block;
+}
+*/
+/* Carousel container styling */
+.carousel {
+    width: 100%; /* Adjust width of the carousel */
+    height: 300px; /* Set height of the carousel */
+    overflow: hidden; /* Hide overflow on the right side */
+    position: relative;
+    display: flex;
+    overflow-x: auto;
+    justify-content: safe center;
+    /*margin: 0 auto; /* Center the parent element */
+    
+    
+     /* Center the images if there are fewer */
+}
+
+.image-container {
+    height: 100%; 
+    overflow-y: hidden;
+    display: flex;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;  
+    scrollbar-width: none; 
+    min-width: 0;
+    
+}
+/* Individual image styling */
+.image-container img {
+    height: 100%;
+    display: inline-block;
+    padding-right: 0.4rem;
+    width: auto; /* Maintain the original aspect ratio */
+}
+
+.image-container::-webkit-scrollbar {
+    display: none;
+  }
+.about-content {
+    padding: 0 1rem 1rem 1rem;
+}
+.resume-item {
+    margin: 0 0 0 10px;
+}
+
+@media (max-width: 768px) {
+    #map-container {
+        display: none;
+    }
+    #navigation-container {
+        position: sticky;
+        padding: 0;
+        top: 0;
+        z-index: 1;
+        background-color: white;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+    }
+    #content-container {
+        padding: 0;
+        width: 100%;
+        
+    }
+    #mobile-disclaimer {
+        display: block;
+        text-align: center;
+        padding: 0.5rem 0;
+        font-style: italic;
+    }
+    .nav-item {
+        margin: 0;
+        border-bottom: none;
+        border-top: none;
+        border-left: none;
+    }
+    .post {
+        border-left : none;
+        border-right: none;
+    }
+    .link:hover {
+        font-weight: normal;
+    }
+    
+}
+@media (min-width: 1281px) {
+    #content-container {
+        width: 40%;
+    }
+}

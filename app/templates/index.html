@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+        <div id="mobile-disclaimer">view on desktop for full website</div>
+    
+    {% for post in posts %}
+    <div class="post" id={{post.id}}>
+        <input type="radio" name="accordion" id="post{{post.id}}title" >
+        <label for="post{{post.id}}title" class="title link">{{post.title}}</label>
+        
+        <span class="post-location">{{post.location}} {{post.year}}</span>
+        {% if current_user.is_authenticated and current_user.is_admin %}
+        <a href="{{url_for('main.edit_post', post_id=post.id)}}">edit</a>
+        <a href="{{url_for('main.delete_post', post_id=post.id)}}">delete</a>
+        {% endif %}
+
+        
+            <div class="post-content">
+                
+
+                {% if post.images %}
+                <div class="carousel">
+                    <div class="image-container">
+                        {% for image in post.images %}
+                        <img class="post-image"
+                            src="{{ url_for('static', filename=image.filename) }}"
+                            alt="{{ 'Image for ' ~ post.title }}">
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                        
+                <div class="post-text">
+                    {{ post.content | safe }}
+                </div>
+            </div>
+    </div>
+    {% endfor %}
+        
+
+
+{% endblock %}

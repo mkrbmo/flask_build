@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %} 
+<div class="">
+<h1>Add New Post</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    <!-- Title -->
+    <label for="title">Title:</label><br>
+    <input type="text" id="title" name="title" required><br><br>
+
+    <!-- Date -->
+    <label for="date">Date:</label><br>
+    <input type="date" id="date" name="date" required><br><br>
+
+    <!-- Location -->
+    <label for="location">Location:</label><br>
+    <input type="text" id="location" name="location" required><br><br>
+
+    <!-- Content -->
+    <label for="content">Content:</label><br>
+    <textarea id="content" name="content" rows="6" required></textarea><br><br>
+
+    <!-- GeoJSON file -->
+    <label for="geojson_file">GeoJSON File:</label><br>
+    <input type="file" id="geojson_file" name="geojson_file" accept=".geojson,.json"><br><br>
+
+    <!-- Images -->
+    <label for="images">Upload Images:</label><br>
+    <input type="file" id="images" name="images" accept="image/*" multiple><br><br>
+
+    <!-- Submit -->
+    <button type="submit">Create Post</button>
+</form>
+
+</div>
+{% endblock %}

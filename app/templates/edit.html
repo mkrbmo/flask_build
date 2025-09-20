@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %} 
+<div class="">
+<h1>Edit {{post.title}}</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    <!-- Title -->
+    <label for="title">Title:</label><br>
+    <input type="text" id="title" name="title" value="{{ request.form['title'] or post['title'] }}" required><br><br>
+
+    <!-- Date -->
+    <label for="date">Date:</label><br>
+    <input type="date" id="date" name="date" value="{{ request.form['date'] or post['date']}}" required><br><br>
+
+    <!-- Location -->
+    <label for="location">Location:</label><br>
+    <input type="text" id="location" name="location" value="{{ request.form['location'] or post['location']}}" required><br><br>
+
+    <!-- Content -->
+    <label for="content">Content:</label><br>
+    <textarea id="content" name="content" rows="6" required>{{ request.form['content'] or post['content']}}</textarea><br><br>
+
+    <!-- GeoJSON file -->
+    <label for="geojson_file">GeoJSON File:</label><br>
+    <input type="file" id="geojson_file" name="geojson_file" accept=".geojson,.json" value="{{ request.form['geojson_file'] or post['geojson_file']}}" ><br><br>
+
+    <!-- Images -->
+    <label for="images">Upload Images:</label><br>
+    <input type="file" id="images" name="images" accept="image/*" multiple><br><br>
+
+    <!-- Submit -->
+    <button type="submit">Save</button>
+</form>
+
+</div>
+{% endblock %}

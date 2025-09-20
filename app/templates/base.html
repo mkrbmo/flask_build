@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>miles</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+     
+    <script src="{{url_for('static', filename='script.js')}}" defer></script>
+    <script src="{{url_for('static', filename='map.js')}}" defer></script>
+</head>
+<body>
+    
+
+        
+        <div id="map-container">
+            <div id="map"></div>
+        </div>
+
+        <div id="navigation-container" >
+            <a href="{{url_for('main.index')}}" class="nav-item link">miles</a>
+            <a href="{{url_for('main.about')}}" class="nav-item link">about</a>
+            {% if current_user.is_authenticated and current_user.is_admin %}
+            <a href="{{url_for('main.add_post')}}" class="nav-item link">add post</a>
+            <a href="{{url_for('auth.logout')}}" class="nav-item link">logout</a>
+            
+            {% endif %}
+        </div>
+        <div id="content-container" >
+        {% block content %}{% endblock %}
+        </div
+</body>
+</html>

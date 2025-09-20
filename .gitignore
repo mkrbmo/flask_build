@@ -1,0 +1,11 @@
+.DS_Store
+.env
+oldFiles
+oldFiles/*
+blogContent.csv
+static/images/*
+static/geojson/*
+instance/*
+__pycache__
+init_from_csv.py
+posts.csv

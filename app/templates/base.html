@@ -28,11 +28,7 @@
         <div id="navigation-container" >
             <a href="{{url_for('main.index')}}" class="nav-item link">miles</a>
             <a href="{{url_for('main.about')}}" class="nav-item link">about</a>
-            {% if current_user.is_authenticated and current_user.is_admin %}
-            <a href="{{url_for('main.add_post')}}" class="nav-item link">add post</a>
-            <a href="{{url_for('auth.logout')}}" class="nav-item link">logout</a>
             
-            {% endif %}
         </div>
         <div id="content-container" >
         {% block content %}{% endblock %}

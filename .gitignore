@@ -9,3 +9,4 @@ instance/*
 __pycache__
 init_from_csv.py
 posts.csv
+commands.txt

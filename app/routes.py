@@ -4,6 +4,7 @@ from . import db
 from flask_login import login_required, current_user
 import os
 from werkzeug.utils import secure_filename
+from .utils import clear_post_images, replace_geojson_file
 
 bp = Blueprint("main", __name__)
 @bp.route('/')
@@ -37,33 +38,25 @@ def add_post():
         db.session.add(post)
         db.session.flush()  # ensures post.id is available before commit
 
-        # Step 2: handle GeoJSON file upload
+        # --- Handle GeoJSON replacement ---
         if geojson_file and geojson_file.filename.endswith('.geojson'):
-            filename = secure_filename(geojson_file.filename)
+            # Delete old GeoJSON file from disk nad replace
+            post.geojson_file = replace_geojson_file(post.id, geojson_file)
 
-            # Create directory static/geojson/<postid> if it doesn't exist
-            geojson_dir = os.path.join(current_app.static_folder, 'geojson', str(post.id))
-            os.makedirs(geojson_dir, exist_ok=True)
+        # --- Handle image replacement ---
+        if images and any(img.filename for img in images):
 
-            # Save file
-            geojson_path = os.path.join(geojson_dir, filename)
-            geojson_file.save(geojson_path)
+            # Save new images
+            for image in images:
+                if image and image.filename:
+                    img_filename = secure_filename(image.filename)
+                    img_dir = os.path.join(current_app.static_folder, 'uploads', 'images', str(post.id))
+                    os.makedirs(img_dir, exist_ok=True)
+                    img_path = os.path.join(img_dir, img_filename)
+                    image.save(img_path)
 
-            # Store relative path for static access
-            post.geojson_file = f"geojson/{post.id}/{filename}"
-
-        # Step 3: handle image uploads
-        for image_file in images:
-            if image_file and image_file.filename:
-                img_filename = secure_filename(image_file.filename)
-                img_dir = os.path.join(current_app.static_folder, 'images', str(post.id))
-                os.makedirs(img_dir, exist_ok=True)
-                img_path = os.path.join(img_dir, img_filename)
-                image_file.save(img_path)
-
-                # Save image record in DB
-                new_img = Image(filename=f"images/{post.id}/{img_filename}", post=post)
-                db.session.add(new_img)
+                    new_img = Image(filepath=img_path, post=post)
+                    db.session.add(new_img)
 
         # Step 4: commit everything
         db.session.commit()
@@ -81,31 +74,40 @@ def edit_post(post_id):
         abort(403)  # Forbidden
 
     post = Post.query.get_or_404(post_id)
+
     if request.method == 'POST':
         post.title = request.form['title']
         post.date = request.form['date']
         post.location = request.form['location']
         post.content = request.form['content']
-
         geojson_file = request.files.get('geojson_file')
         images = request.files.getlist('images')
 
+        # --- Handle GeoJSON replacement ---
         if geojson_file and geojson_file.filename.endswith('.geojson'):
-            geojson_filename = geojson_file.filename
-            geojson_path = os.path.join(app.config['UPLOAD_FOLDER'], geojson_filename)
-            geojson_file.save(geojson_path)
-            post.geojson_file = geojson_filename
+            # Delete old GeoJSON file from disk nad replace
+            post.geojson_file = replace_geojson_file(post.id, geojson_file)
 
-        for image in images:
-            if image and image.filename:
-                img_filename = secure_filename(image.filename)
-                img_dir = os.path.join('static/images', str(post.id))
-                os.makedirs(img_dir, exist_ok=True)
-                img_path = os.path.join(img_dir, img_filename)
-                image.save(img_path)
+        # --- Handle image replacement ---
+        if images and any(img.filename for img in images):
+            # Delete old images from disk
+            clear_post_images(post.id)
+            # Delete old images from DB
+            for old_img in post.images:
+                db.session.delete(old_img)
 
-                new_img = Image(filename=f"images/{post.id}/{img_filename}", post=post)
-                db.session.add(new_img)
+
+            # Save new images
+            for image in images:
+                if image and image.filename:
+                    img_filename = secure_filename(image.filename)
+                    img_dir = os.path.join(current_app.static_folder, 'uploads', 'images', str(post.id))
+                    os.makedirs(img_dir, exist_ok=True)
+                    img_path = os.path.join(img_dir, img_filename)
+                    image.save(img_path)
+
+                    new_img = Image(filepath=img_path, post=post)
+                    db.session.add(new_img)
 
         db.session.commit()
         return redirect(url_for('main.index'))

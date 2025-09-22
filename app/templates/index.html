@@ -24,7 +24,7 @@
                     <div class="image-container">
                         {% for image in post.images %}
                         <img class="post-image"
-                            src="{{ url_for('static', filename=image.filename) }}"
+                            src="{{ url_for('static', filename=image.filepath) }}"
                             alt="{{ 'Image for ' ~ post.title }}">
                         {% endfor %}
                     </div>

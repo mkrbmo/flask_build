@@ -14,7 +14,7 @@ class Post(db.Model):
 
 class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    filename = db.Column(db.String(200), nullable=False)
+    filepath = db.Column(db.String(200), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
 
 class User(UserMixin, db.Model):
